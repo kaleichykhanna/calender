@@ -1,10 +1,5 @@
 from django.db import models
-
-class User(models.Model):
-    login = models.CharField(max_length=63)
-    password = models.CharField(max_length=63)
-    def __str__(self):
-        return f"user:{self.login}"
+from django.contrib.auth.models import User
 
 class Plan(models.Model):
     name = models.CharField(max_length=255)

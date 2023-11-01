@@ -1,0 +1,11 @@
+{% extends "users/layout.html" %}
+
+{% block content %}
+    <h1>Добро пожаловать, {{ request.user.first_name }}</h1>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Имя пользователя: {{ request.user.username }}</li>
+        <li class="list-group-item">Email: {{ request.user.email }}</li>
+    </ul>
+
+    <a class="btn btn-primary" href="{% url 'logout' %}">Выйти</a>
+{% endblock %}

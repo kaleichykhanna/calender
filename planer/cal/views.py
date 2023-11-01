@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import User, Plan
+from .models import Plan
 
 def index(request):
     return render(request, 'cal/home.html', {
