@@ -1,45 +1,25 @@
+{% extends "cal/layout.html" %}
 
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Weekly Calendar</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Weekly Calendar</h1>
-
-  
-
-    <table class="table">
-        <tr>
-            <th></th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-            <th>Saturday</th>
-            <th>Sunday</th>
-        </tr>
-        {% for row in table_data %}
-        <tr>
-          <td>{{ forloop.counter0 }}</td>            
-          {% for d in row%}
-          <td> d </td>
-          {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-
-</body>
-</html>
+{% block body %}
+  {%for plan in plans%}
+    <p>План: {{plan.name}}</p>
+    <p>Старт:{{plan.start_time}}</p>
+    <p>Длительность: {{plan.duration}}</p>
+  {%endfor%}
+  <table class="table">
+    <tr>
+        <th>Понедельник</th>
+        <th>Вторник</th>
+        <th>Среда</th>
+        <th>Четверг</th>
+        <th>Пятница</th>
+        <th>Суббота</th>
+        <th>Воскресенье</th>
+    </tr>
+    <tr>          
+      {% for d in table_data%}
+      <td></td>
+      {% endfor %}
+    </tr>
+  </table>
+{% endblock %}
