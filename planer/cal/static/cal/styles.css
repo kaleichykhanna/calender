@@ -1,0 +1,16 @@
+#neartable{
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+}
+div#plan {
+    background-color: coral;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 3px;
+    border-radius: 5px;
+}
+table {
+    table-layout: fixed;
+  }
+

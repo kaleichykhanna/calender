@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -41,23 +41,17 @@ def logout_view(request):
                 "message": "Вход не выполнен"
             })
 
-from django.shortcuts import render 
 from django.contrib.auth.forms import UserCreationForm 
-from django.contrib import messages
 # Create your views here. 
  
-def register_view(request): 
-    if request.POST == 'POST': 
-        form = UserCreationForm() 
-        if form.is_valid(): 
-            form.save() 
-            messages.success(request, 'Пользователь успешно зарегестрирован')
-        else:
-            messages.error(request, "Ненене") 
- 
-    else: 
-        form = UserCreationForm() 
-
+def register_view(request):
+    if request.method != 'POST':
+        form = UserCreationForm()
+    else:
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
     return render(request, 'users/register.html', {
-        'form':form
-    }) 
+        'form': form
+        })

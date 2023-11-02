@@ -1,25 +1,52 @@
 {% extends "cal/layout.html" %}
 
-{% block body %}
-  {%for plan in plans%}
+{%block content%}
+
+<div id = "neartable" class="container pt-3">
+  <a class="btn btn-primary" href="{% url 'cal:week_view' year=prev_week.year month=prev_week.month day=prev_week.day %}">Папярэдні тыдзень</a>
+  <a class="btn btn-primary" href="{% url 'cal:week_view' year=next_week.year month=next_week.month day=next_week.day %}">Наступны тыдзень</a>
+</div>
+  {% comment %} {%for plan in plans%}
     <p>План: {{plan.name}}</p>
     <p>Старт:{{plan.start_time}}</p>
     <p>Длительность: {{plan.duration}}</p>
-  {%endfor%}
+  {%endfor%} {% endcomment %}
+  <div>
   <table class="table">
+
     <tr>
-        <th>Понедельник</th>
-        <th>Вторник</th>
-        <th>Среда</th>
-        <th>Четверг</th>
-        <th>Пятница</th>
-        <th>Суббота</th>
-        <th>Воскресенье</th>
-    </tr>
-    <tr>          
-      {% for d in table_data%}
-      <td></td>
+      {% for date in week_dates %}
+          <th>{{ date|date:"d F"}}</th>
       {% endfor %}
     </tr>
+    <tr>
+      <th>Панядзелак</th>
+      <th>Аўторак</th>
+      <th>Серада</th>
+      <th>Чацвер</th>
+      <th>Пятніца</th>
+      <th>Субота</th>
+      <th>Нядзеля</th>  
+  </tr>
+  <tr>
+    {% for date in week_dates %}
+      <td>          
+        {% for plan in plans%}
+            {% if plan.start_time.day == date.day %}
+              <div id = "plan">
+                <div>
+                  {{ plan.name }}
+                </div>
+                <div>
+                  {{plan.start_time|time:"H:i"}} - {{plan.end_time|time:"H:i"}}
+                </div>
+
+              </div>
+            {% endif %}
+        {% endfor %}          
+      </td>
+    {% endfor %}
+  </tr>
   </table>
+</div>
 {% endblock %}

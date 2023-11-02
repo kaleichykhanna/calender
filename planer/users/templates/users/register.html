@@ -1,12 +1,8 @@
 {% extends 'users/layout.html' %} 
 {% block content %} 
 <div class = "login"> 
-    {% if messages %} 
-        <ul> 
-        {% for message in messages %} 
-            <li>{{ message }}</li> 
-        {% endfor %} 
-        </ul> 
+    {% if message %} 
+        <div>{{ message }}</div> 
     {% endif %} 
     <h1>Рэгістрацыя</h1> 
     <form method="post" > 
