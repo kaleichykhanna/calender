@@ -31,14 +31,14 @@ def login_view(request):
         # Otherwise, return login page again with new context
         else:
             return render(request, "users/login.html", {
-                "message": "Неправильно введённые данные"
+                "message": "Няправільна уведзеныя дадзеныя"
             })
     return render(request, "users/login.html")
 
 def logout_view(request):
     logout(request)
     return render(request, "users/login.html", {
-                "message": "Вход не выполнен"
+                "message": "Уваход не выкананы"
             })
 
 from django.contrib.auth.forms import UserCreationForm 

@@ -30,3 +30,6 @@ def week_view(request, year=None, month=None, day=None):
 def redirect_to_today(request):
     today = datetime.today()
     return HttpResponseRedirect(reverse('cal:week_view', args=(today.year, today.month, today.day)))
+
+def edit(request):
+    return render(request, 'cal/edit.html')

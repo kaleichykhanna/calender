@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'cal',
     'users',
     "crispy_forms",
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
