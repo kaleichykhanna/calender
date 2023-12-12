@@ -1,8 +1,7 @@
-from django.contrib import admin
-from .models import Plan
+from django.contrib import admin   
+from .models import DefaultHabit, DefaultTask, DefaultHour
 
-class PlanAdmin(admin.ModelAdmin):
-    exclude = ('end_time',)
-
-# Register the new PlanAdmin
-admin.site.register(Plan, PlanAdmin)
+# Register your models here
+admin.site.register(DefaultHabit)
+admin.site.register(DefaultTask)
+admin.site.register(DefaultHour)

@@ -1,0 +1,113 @@
+{% extends "cal/layout.html" %}
+
+{%block content%}
+<div class="container">
+    <h1 class="my-4">Мае планы</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="my-3">Звычкі</h2>
+            {% for habit in habits %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ habit.name }}</h5>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'cal:edit_habit' habit.pk %}" class="btn btn-primary">Змяніць</a>
+                        <form method="post" action="{% url 'cal:delete_habit' habit.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Выдаліць</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-4">
+            <h2 class="my-3">Задачы</h2>
+            {% for task in tasks %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.name }}</h5>
+                    <p class="card-text">Тэрмін: {{ task.due_date|date:"j F, Y" }}</p>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'cal:edit_task' task.pk %}" class="btn btn-primary">Змяніць</a>
+                        <form method="post" action="{% url 'cal:delete_task' task.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Выдаліць</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-4">
+            <h2 class="my-3">Часы</h2>
+            {% for hour in hours %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ hour.name }}</h5>
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'cal:edit_hour' hour.pk %}" class="btn btn-primary">Змяніць</a>
+                        <form method="post" action="{% url 'cal:delete_hour' hour.pk %}" onsubmit="return confirm('Вы ўпэўненыя, што хочаце выдаліць гэты час? Гэта таксама выдаліць усе прывычкі і задачы, якія звязаныя з гэтым часам.')">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Выдаліць</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <h1 class="my-4">Прапанаванні</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="my-3">Звычкі</h2>
+            {% for default_habit in default_habits %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ default_habit.name }}</h5>
+                    <form method="post" action="{% url 'cal:add_default_habit' default_habit.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Дадаць</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <h2 class="my-3">Задачы</h2>
+            {% for default_task in default_tasks %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ default_task.name }}</h5>
+                    <p class="card-text">Тэрмін: {{ default_task.due_date|date:"j F, Y" }}</p>
+                    <form method="post" action="{% url 'cal:add_default_task' default_task.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Дадаць</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-4">
+            <h2 class="my-3">Часы</h2>
+            {% for default_hour in default_hours %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ default_hour.name }}</h5>
+                    <form method="post" action="{% url 'cal:add_default_hour' default_hour.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Дадаць</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        
+    </div>
+</div>
+
+{% endblock %}
