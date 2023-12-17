@@ -1,0 +1,9 @@
+{% extends 'cal/layout.html' %}
+
+{% block content %}
+<form method="post" class="form-group">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Змяніць звычку</button>
+</form>
+{% endblock %}

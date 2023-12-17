@@ -1,0 +1,61 @@
+{% extends "cal/layout.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center">
+        <a class="btn btn-primary btn-lg" href="{% url 'cal:day_view' year=prev_date.year month=prev_date.month day=prev_date.day %}">
+            <i class="fas fa-arrow-left"></i> Папярэдні дзень
+        </a>
+        <h2 class="text-center my-4">{{ date|date:"d F" }}</h2>
+        <a class="btn btn-primary btn-lg" href="{% url 'cal:day_view' year=next_date.year month=next_date.month day=next_date.day %}">
+            Наступны дзень <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</div>
+
+  <div class="container">
+    {% for hour, times in hours.items %}
+        <!-- Use Bootstrap's card component for each hour -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="card-title">{{ hour }}</h5>
+                <p class="card-text"> {{ times.0|date:"H:i" }} - {{ times.1|date:"H:i" }}</p>
+            </div>
+
+            <!-- Add a loop to display the related Plan objects --> 
+            {% for plan in hour.plans.all %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">{{ plan.name }}</h6>
+                        <p class="card-text">Час у дзень: {{ plan.time_a_day}}</p>
+                        
+                        {% for event in plan.events.all %}
+                            {% if event.start_time.date == date.date %}
+                                <p class="card-text">Запланавана на {{ event.start_time|date:"H:i" }}</p>
+                                <!-- Add a button to delete the event -->
+                                <form method="post" action="{% url 'cal:delete_event' event.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary">Перапланаваць</button>
+                                </form>
+                                {% endif %}
+                                {% endfor %}
+                            <!-- Add a form to create a new event -->
+                            <form method="post" action="{% url 'cal:add_event' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="plan" value="{{ plan.id }}">
+                                <input type="hidden" name="date" value="{{ date|date:'m-d-Y' }}">
+                                <div class="input-group mb-3">
+                                    <input type="time" name="start_time" class="form-control">
+                                    <div class="input-group-append">
+                                        <input type="submit" value="Дадаць план" class="btn btn-outline-secondary">
+                                    </div>
+                                </div>
+                            </form>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+      {% endfor %}
+  </div>
+{% endblock %}

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Уваход</title>
+    <title>Планер</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'cal/styles.css' %}">
@@ -17,8 +17,24 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" justify-content-end id="navbarNav">
-            <ul class="navbar-nav">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cal:today' %}">Спланаваць дзень</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Дадаць
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{% url 'cal:add_habit' %}">Дадаць звычку</a>
+                        <a class="dropdown-item" href="{% url 'cal:add_task' %}">Дадаць задачу</a>
+                        <a class="dropdown-item" href="{% url 'cal:add_hour' %}">Дадаць час</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cal:view_plans' %}">Мае планы</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'index' %}">{{ user.username }}</a>
                 </li>
@@ -27,13 +43,24 @@
                 </li>                
             </ul>
         </div>
+        
     </nav>
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 
     <!-- Main Content -->
     <div class="container">
         {% block content %}
         {% endblock content %} 
     </div>
+    
 
     <!-- Bootstrap JS and jQuery -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

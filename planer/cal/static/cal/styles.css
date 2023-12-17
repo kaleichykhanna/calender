@@ -3,15 +3,49 @@
     justify-content: space-between;
     margin: 5px;
 }
-div#plan {
-    background-color: coral;
-    border: 1px solid #ddd;
-    position:relative;
+.plan {
+    background: lavender;
+    color: #4210a9;
+    position: relative;
     padding: 10px;
     margin: 3px;
     border-radius: 5px;
 }
 table {
     table-layout: fixed;
-  }
+}
 
+.day-view {
+    display: flex;
+    flex-direction: column;
+}
+
+.hour-block {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.hour-label {
+    font-weight: bold;
+}
+
+.event-block {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #e6f7ff;
+}
+
+.event-title {
+    font-weight: bold;
+}
+
+.event-time {
+    font-size: 0.8em;
+}
+  
