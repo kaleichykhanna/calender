@@ -6,7 +6,7 @@
   <a class="btn btn-primary" href="{% url 'cal:week_view' year=prev_week.year month=prev_week.month day=prev_week.day %}">Папярэдні тыдзень</a>
   <a class="btn btn-primary" href="{% url 'cal:week_view' year=next_week.year month=next_week.month day=next_week.day %}">Наступны тыдзень</a>
 </div>
-  <div>
+  <div class="table-responsive">
   <table class="table">
 
     <tr>
@@ -28,7 +28,7 @@
       <td>          
         {% for event in events%}
             {% if event.start_time.day == date.day %}
-              <div id = "plan">
+              <div class = "plan">
                 <div>
                   <b>{{ event.name }}</b>
                 </div>

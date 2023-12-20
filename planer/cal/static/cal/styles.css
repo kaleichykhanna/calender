@@ -11,9 +11,14 @@
     margin: 3px;
     border-radius: 5px;
 }
-table {
+.table {
     table-layout: fixed;
+    width: 100%;
 }
+.table td, .table th {
+    width: 150px; /* Adjust this value according to your needs */
+}
+
 
 .day-view {
     display: flex;
