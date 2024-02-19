@@ -1,0 +1,30 @@
+{% extends "cal/layout.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <h1 class="my-4">Default Tasks</h1>
+
+    <div class="row">
+      <div class="col">
+        <div class="list-group">
+          {% for task in tasks %}
+            <div class="list-group-item">
+              <div class="d-flex w-100 justify-content-between">
+                <a href="{% url 'cal:edit_default_task' task.id %}">
+                  <h5 class="mb-1">{{ task.name }}</h5>
+                </a>
+                <form method="post" action="{% url 'cal:delete_default_task' task.id %}">
+                  {% csrf_token %}
+                  <button class="btn btn-danger btn-sm" type="submit">Удалить</button>
+                </form>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+{% endblock %}

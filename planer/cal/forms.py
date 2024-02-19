@@ -1,7 +1,5 @@
 from django import forms
 from .models import Habit, Task, Hour
-from django.forms.widgets import TextInput
-from django.utils.dateparse import parse_duration
 import datetime
 
 class DurationInput(forms.TimeInput):
@@ -120,3 +118,20 @@ class HourForm(forms.ModelForm):
             'start_time_sunday': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
             'end_time_sunday': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
         }
+
+from .models import DefaultHour, DefaultHabit, DefaultTask
+
+class DefaultHourForm(forms.ModelForm):
+    class Meta:
+        model = DefaultHour
+        fields = '__all__'
+
+class DefaultHabitForm(forms.ModelForm):
+    class Meta:
+        model = DefaultHabit
+        fields = '__all__'
+
+class DefaultTaskForm(forms.ModelForm):
+    class Meta:
+        model = DefaultTask
+        fields = '__all__'

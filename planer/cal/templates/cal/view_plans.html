@@ -68,7 +68,7 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">{{ default_habit.name }}</h5>
-                    <form method="post" action="{% url 'cal:add_default_habit' default_habit.pk %}">
+                    <form method="post" action="{% url 'cal:add_to_mine_default_habit' default_habit.pk %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Дадаць</button>
                     </form>
@@ -83,7 +83,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ default_task.name }}</h5>
                     <p class="card-text">Тэрмін: {{ default_task.due_date|date:"j F, Y" }}</p>
-                    <form method="post" action="{% url 'cal:add_default_task' default_task.pk %}">
+                    <form method="post" action="{% url 'cal:add_to_mine_default_task' default_task.pk %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Дадаць</button>
                     </form>
@@ -97,7 +97,7 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title">{{ default_hour.name }}</h5>
-                    <form method="post" action="{% url 'cal:add_default_hour' default_hour.pk %}">
+                    <form method="post" action="{% url 'cal:add_to_mine_default_hour' default_hour.pk %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Дадаць</button>
                     </form>

@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from .forms import HabitForm, TaskForm, HourForm
-from django.contrib.auth.decorators import login_required
+from .forms import HabitForm, TaskForm, HourForm, DefaultHabitForm, DefaultTaskForm, DefaultHourForm
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 
 from .models import Event, Task, Habit, Hour, Plan, DefaultTask, DefaultHabit, DefaultHour, DefaultPlan
-
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
 
 from datetime import datetime, timedelta
 
@@ -228,7 +229,7 @@ def delete_event(request, event_id):
     return HttpResponseRedirect(reverse('cal:day_view', args=(year, month, day)))
     
 @login_required
-def add_default_habit(request, pk):
+def add_to_mine_default_habit(request, pk):
     default_habit = get_object_or_404(DefaultHabit, pk=pk)
     new_habit = Habit(user=request.user, hour = Hour.objects.filter(user=request.user).first())
     for field in default_habit._meta.fields:
@@ -237,7 +238,7 @@ def add_default_habit(request, pk):
     return redirect('cal:edit_habit', pk=new_habit.pk)
 
 @login_required
-def add_default_task(request, pk):
+def add_to_mine_default_task(request, pk):
     default_task = get_object_or_404(DefaultTask, pk=pk)
     new_task = Task(user=request.user, hour = Hour.objects.filter(user=request.user).first())
     for field in default_task._meta.fields:
@@ -246,7 +247,7 @@ def add_default_task(request, pk):
     return redirect('cal:edit_task', pk=new_task.pk)
 
 @login_required
-def add_default_hour(request, pk):
+def add_to_mine_default_hour(request, pk):
     default_hour = get_object_or_404(DefaultHour, pk=pk)
     new_hour = Hour(user=request.user)
     for field in default_hour._meta.fields:
@@ -254,3 +255,162 @@ def add_default_hour(request, pk):
     new_hour.save()
     return redirect('cal:edit_hour', pk=new_hour.pk)
 
+# Проверка на администратора
+def admin_check(user):
+    return user.is_superuser
+
+# Страница администратора
+@login_required
+@user_passes_test(admin_check)
+def admin_page(request):
+    return render(request, 'cal/admin_page.html')
+
+# Страницы для просмотра и добавления данных
+@login_required
+@user_passes_test(admin_check)
+def view_default_habits(request):
+    habits = DefaultHabit.objects.all()
+    return render(request, 'cal/view_default_habits.html', {'habits': habits})
+
+@login_required
+@user_passes_test(admin_check)
+def add_default_habit(request):
+    if request.method == 'POST':
+        form = DefaultHabitForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cal:view_default_habits')
+    else:
+        form = DefaultHabitForm()
+    return render(request, 'cal/add_default_habit.html', {
+        "form":form
+    })
+
+@login_required
+@user_passes_test(admin_check)
+def view_default_tasks(request):
+    tasks = DefaultTask.objects.all()
+    return render(request, 'cal/view_default_tasks.html', {'tasks': tasks})
+
+@login_required
+@user_passes_test(admin_check)
+def add_default_task(request):
+    if request.method == 'POST':
+        form = DefaultTaskForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cal:view_default_tasks')
+    else:
+        form = DefaultTaskForm()
+    return render(request, 'cal/add_default_task.html', {
+        "form":form
+    })
+
+@login_required
+@user_passes_test(admin_check)
+def view_default_hours(request):
+    hours = DefaultHour.objects.all()
+    return render(request, 'cal/view_default_hours.html', {'hours': hours})
+
+@login_required
+@user_passes_test(admin_check)
+def add_default_hour(request):
+    if request.method == 'POST':
+        form = DefaultHourForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cal:view_default_hours')
+    else:
+        form = DefaultHourForm()
+    return render(request, 'cal/add_default_hour.html', {
+        "form":form
+    })
+
+@login_required
+@user_passes_test(admin_check)
+def view_users(request):
+    users = User.objects.all()
+    return render(request, 'cal/view_users.html', {'users': users})
+
+@login_required
+@user_passes_test(admin_check)
+def edit_default_habit(request, pk):
+    habit = get_object_or_404(DefaultHabit, id=pk)
+    if request.method == 'POST':
+        form = DefaultHabitForm(request.POST, instance=habit)
+        if form.is_valid():
+            form.save()
+            return redirect('cal:view_default_habits')
+    else:
+        form = DefaultHabitForm(instance=habit)
+    return render(request, 'cal/edit_default_habit.html', {'form': form})
+
+@login_required
+@user_passes_test(admin_check)
+def edit_default_task(request, pk):
+    task = get_object_or_404(DefaultTask, id=pk)
+    if request.method == 'POST':
+        form = DefaultTaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('cal:view_default_tasks')
+    else:
+        form = DefaultTaskForm(instance=task)
+    return render(request, 'cal/edit_default_task.html', {'form': form})
+
+@login_required
+@user_passes_test(admin_check)
+def edit_default_hour(request, pk):
+    hour = get_object_or_404(DefaultHour, id=pk)
+    if request.method == 'POST':
+        form = DefaultHourForm(request.POST, instance=hour)
+        if form.is_valid():
+            form.save()
+            return redirect('cal:view_default_hours')
+    else:
+        form = DefaultHourForm(instance=hour)
+    return render(request, 'cal/edit_default_hour.html', {'form': form})
+
+@login_required
+@user_passes_test(admin_check)
+def delete_default_habit(request, pk):
+    habit = get_object_or_404(DefaultHabit, pk=pk)
+    if request.method == 'POST':
+        habit.delete()
+    return redirect('cal:view_default_habits')
+
+@login_required
+@user_passes_test(admin_check)
+def delete_default_task(request, pk):
+    task = get_object_or_404(DefaultTask, pk=pk)
+    if request.method == 'POST':
+        task.delete()
+    return redirect('cal:view_default_tasks')
+
+@login_required
+@user_passes_test(admin_check)
+def delete_default_hour(request, pk):
+    hour = get_object_or_404(DefaultHour, pk=pk)
+    if request.method == 'POST':
+        hour.delete()
+    return redirect('cal:view_default_hours')
+
+@login_required
+@user_passes_test(admin_check)
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.delete()
+    return redirect('cal:view_users')
+
+@login_required
+@user_passes_test(admin_check)
+def edit_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('cal:view_users')
+    else:
+        form = UserChangeForm(instance=user)
+    return render(request, 'cal/edit_user.html', {'form': form})

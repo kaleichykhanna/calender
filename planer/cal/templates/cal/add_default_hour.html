@@ -1,0 +1,17 @@
+{% extends "cal/layout.html" %}
+
+{% block content %}
+  <div class="container-fluid">
+    <h1 class="my-4">Добавить час по умолчанию</h1>
+
+    <div class="row">
+      <div class="col">
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-primary" type="submit">Захаваць</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
